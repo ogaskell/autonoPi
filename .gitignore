@@ -130,3 +130,6 @@ dmypy.json
 
 # VS Code configs
 .vscode/
+
+# Repl.it config
+.replit
