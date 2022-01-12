@@ -23,7 +23,7 @@ See top left of file for TOC
 
 [https://github.com/ogaskell/autonoPi](https://github.com/ogaskell/autonoPi)
 
-I will be using Git and GitHub to track my progress throughout the project, as well as managing individual features through it’s branching feature. See 
+I will be using Git and GitHub to track my progress throughout the project, as well as managing individual features through it’s branching feature. See
 
 [Version Control](#version-control) for more detail.
 
@@ -32,7 +32,7 @@ I will be using Git and GitHub to track my progress throughout the project, as w
 
 [https://trello.com/b/VfhauFhb](https://trello.com/b/VfhauFhb)
 
-I will be using Trello to manage features and implement the Kanban methodology. See 
+I will be using Trello to manage features and implement the Kanban methodology. See
 
 [Development Methodology](#development-methodology) for more detail.
 
@@ -67,7 +67,7 @@ Autonomous vehicles have many advantages over human-operated vehicles - on the r
 
 ### Target Market
 
-My project is aimed at people wanting to develop a system based on my project, leveraging a ready-built autonomous system. This can be quite a complex thing to build and may be out of a person/companies scope, budget or expertise and this could expedite the development process. With significant 
+My project is aimed at people wanting to develop a system based on my project, leveraging a ready-built autonomous system. This can be quite a complex thing to build and may be out of a person/companies scope, budget or expertise and this could expedite the development process. With significant
 
 documentation and support, someone with little knowledge of the technology could develop my system into a final project which builds upon what I have built to create a complete product/solution.
 
@@ -80,8 +80,8 @@ The system should be able to connect to hardware and control itself to navigate 
 
 * Computer Vision techniques which can identify objects, markers etc. from the surroundings using a webcam or similar device,
 * Classification of objects such as people, signs, markings etc. and extraction of useful information from these classifications,
-* Lane following to navigate a rudimentary road system, using markings detected using Computer Vision and Classification, 
-* Basic Navigation between nodes, such as rooms and POIs using pathfinding algorithms, 
+* Lane following to navigate a rudimentary road system, using markings detected using Computer Vision and Classification,
+* Basic Navigation between nodes, such as rooms and POIs using pathfinding algorithms,
 * The ability to use a range of hardware, such as traditional car-style driving, differential steering, and potentially air and water vehicles,
 * The ability to easily extract data from the system at any point in the process so it can be hooked into external programs, giving a strong foundation for developing other projects on top of this.
 
@@ -90,7 +90,7 @@ The system should be able to connect to hardware and control itself to navigate 
 
 
 
-* My system, according to my design, will not be built for any specific purpose or application, rather is a platform on which a complete, specific solution can be built. This means it cannot perform a specific task without extra work to integrate this into the existing code as well as the addition of any necessary hardware. 
+* My system, according to my design, will not be built for any specific purpose or application, rather is a platform on which a complete, specific solution can be built. This means it cannot perform a specific task without extra work to integrate this into the existing code as well as the addition of any necessary hardware.
 * Also, since the system is built on a Raspberry Pi, computing power is fairly limited. This means any complex/intensive calculations will need to be offloaded via the network or other means to another system/computer.
 
 
@@ -107,21 +107,21 @@ The system should be able to connect to hardware and control itself to navigate 
 
 [Line following robot with OpenCV and contour-based approach](https://const-toporov.medium.com/line-following-robot-with-opencv-and-contour-based-approach-417b90f2c298)
 
-PiTanq is a robot developed in Python using OpenCV – the same software I plan to use. It uses OpenCV’s Hough Line Transform to detect a white line along the floor, which it can then follow. 
+PiTanq is a robot developed in Python using OpenCV – the same software I plan to use. It uses OpenCV’s Hough Line Transform to detect a white line along the floor, which it can then follow.
 
 
 #### Advantages
 
-This is a very similar approach to what I plan to use – an algorithm which can detect lines right in front of the vehicle, calculate their position/angle and use this to direct the vehicle accordingly. PiTanq seems to perform this task very reliably, and surprisingly performance seems to not be an issue, despite running on a relatively underpowered Raspberry Pi Zero. 
+This is a very similar approach to what I plan to use – an algorithm which can detect lines right in front of the vehicle, calculate their position/angle and use this to direct the vehicle accordingly. PiTanq seems to perform this task very reliably, and surprisingly performance seems to not be an issue, despite running on a relatively underpowered Raspberry Pi Zero.
 
 The performance seems to be due to the fact that the Computer Vision isn’t actually running on the Raspberry Pi itself. It runs a REST API which allows the heavy computation for Computer Vision to be offloaded to a nearby computer. While this does have the disadvantage of making the vehicle require a network connection and another computer to make it function, it allows much more complex processing to be done on the images, since the Raspberry Pi cannot run complex AI, ML or CV algorithms.
 
 
 #### Disadvantages
 
-However PiTanq has a few disadvantages which I will need to improve on greatly if I want to achieve my goals for this project. Firstly, it can only follow a single line. It has no navigational skills or decision making, which is a core component of my project as I hope it can be a completely autonomous solution for not only moving around a space, but actually navigating. 
+However PiTanq has a few disadvantages which I will need to improve on greatly if I want to achieve my goals for this project. Firstly, it can only follow a single line. It has no navigational skills or decision making, which is a core component of my project as I hope it can be a completely autonomous solution for not only moving around a space, but actually navigating.
 
-Secondly, it has no degree of user control. It simply follows a line without accepting any input, whereas I would like my project to be able to be commanded by a user, e.g. to start, stop, navigate etc. 
+Secondly, it has no degree of user control. It simply follows a line without accepting any input, whereas I would like my project to be able to be commanded by a user, e.g. to start, stop, navigate etc.
 
 Finally, the CV on the PiTanq is limited to detecting a single line. I would like to be able to detect multiple lines, potentially of different colours, as well as Signs and objects in the surroundings. This will maximise the data available to the navigation algorithms, allowing for more robust navigation systems, as well as providing more data for any programs developed on top of my platform.
 
@@ -159,7 +159,7 @@ The lane following method used here is much more advanced than the PiTanq’s, a
 
 ## Success Criteria
 
-For my success criteria, I will be splitting features into 3 categories: 
+For my success criteria, I will be splitting features into 3 categories:
 
 
 
@@ -173,7 +173,7 @@ I will also sort them by which “area” of the program they fall into:
 
 * **Hardware Interface**- code which allows other parts of the program to interface with some hardware aspect of the platform, whether this be inputs, outputs, or even other devices/networks. These should use standard functions/attributes in order to allow them to be changed for an alternative, for example to use a different type of driving system.
 * **Computer Vision** - code which takes photo/video and extracts useful data from it about the surroundings. This will mainly be interfacing with OpenCV and writing algorithms based around the techniques it provides.
-* **Navigation** - code which allows the system to navigate, by taking data about the vehicle’s current location and environment and outputting a path to follow. 
+* **Navigation** - code which allows the system to navigate, by taking data about the vehicle’s current location and environment and outputting a path to follow.
 * **Management** - code which manages all other areas, by linking them together and managing what data is passed to each function. This will be the main code that runs when the system powers on and will invoke other functions, subroutines and classes.
 
 I will place these in an order which I believe would be a logical order in which to implement features, however as the project changes throughout development this order may change.
@@ -289,7 +289,7 @@ A web interface in which the user can control the basic functions of the vehicle
 <p>
 A basic version of this should include the ability to set destination, view current location, and update the navigation data.
    </td>
-   <td>It should be possible to connect to the robot from any device on the same network and control the functions listed in the Feature Description. 
+   <td>It should be possible to connect to the robot from any device on the same network and control the functions listed in the Feature Description.
    </td>
    <td><strong>Not Started</strong>
    </td>
@@ -370,7 +370,7 @@ The system will/may make use of the following sensors:
 * **Camera/Webcam** \
 A camera/webcam will be invaluable in providing data on the vehicle’s surroundings, such as navigation, signs, obstacles etc. This will be used with CV techniques to provide the system with a detailed set of information about its environment.
 * **Ultrasonic Distance Sensors** \
-These sensors will provide a backup to the camera for collision avoidance, since they are fairly reliable for detecting obstacles in a vehicle's path, and are relatively inexpensive. It also allows for collision detection on all sides of the vehicle, in potential camera blind spots, provided enough sensors are installed. 
+These sensors will provide a backup to the camera for collision avoidance, since they are fairly reliable for detecting obstacles in a vehicle's path, and are relatively inexpensive. It also allows for collision detection on all sides of the vehicle, in potential camera blind spots, provided enough sensors are installed.
 * **Line Followers** \
 These sensors _may_ be used in addition to or instead of CV-based line/lane detection techniques, either as a backup or as a less computationally expensive approach. However these are not as capable as a CV-based approach since they cannot detect colour, or predict upcoming turns which may result in less smooth operation or lower reliability.
 * **Infrared Receivers** \
@@ -397,7 +397,7 @@ I will be using Git and GitHub for Version Control on this project. This allows 
 
 ### Development Methodology
 
-I plan on using the Kanban process while developing my project. The use of a Kanban board allows me to easily keep track of the various features my project will involve, as I feel without one I could easily become overwhelmed by the large amount of components the system will have. I will be using Trello, as this allows me to access the board anywhere, if I am working on my project at home, at college or elsewhere. 
+I plan on using the Kanban process while developing my project. The use of a Kanban board allows me to easily keep track of the various features my project will involve, as I feel without one I could easily become overwhelmed by the large amount of components the system will have. I will be using Trello, as this allows me to access the board anywhere, if I am working on my project at home, at college or elsewhere.
 
 As well as using the Kanban Board, I will assign every feature on the board a GitHub branch. This means as the feature passes through development, at any time I can switch to a different branch and work on another feature if I feel this is necessary.
 
@@ -441,11 +441,11 @@ Since Computer Vision will probably be one of the hardest things in the system t
 
 #### Line Detection
 
-This block will detect lines from the webcam image which may be lane markers/indicators. It should also interpret colour. It will then extract info from these such as position in the photo, angle etc. and send this data to the Lane Interpreter block. 
+This block will detect lines from the webcam image which may be lane markers/indicators. It should also interpret colour. It will then extract info from these such as position in the photo, angle etc. and send this data to the Lane Interpreter block.
 
 It will first convert the image to HSV - this means that I can easily detect areas of a single colour even if lighting changes, since the Hue will be mostly constant. For example - I can then easily detect a blue line using a hue of 240°.  \
 Then, the image will be masked to isolate areas of the colour I want and cropped to areas that are relevant to line detection - mainly the bottom half of the image. This will produce a black+white image, with lines I need to detect in white. \
-A Canny edge detector will then be applied to extract the edges of the lines, and a Hough line transform will extract the position and angle of these lines from the image. 
+A Canny edge detector will then be applied to extract the edges of the lines, and a Hough line transform will extract the position and angle of these lines from the image.
 
 This should produce a list of lines, with their position and angle. This data can then be sent to the Lane Interpreter algorithm.
 
@@ -489,7 +489,7 @@ The dictionary will have a “type” field which denotes which data it stores. 
 
 ### Navigation System
 
-The navigation system will be based on the A* Pathfinding algorithm, and a map of nodes representing junctions in my “road” network. The A* algorithm will calculate the path to a given goal before the vehicle begins travelling, then once it is calculated it will provide the route data to the management engine which can then provide data to the necessary components in order to navigate the vehicle. 
+The navigation system will be based on the A* Pathfinding algorithm, and a map of nodes representing junctions in my “road” network. The A* algorithm will calculate the path to a given goal before the vehicle begins travelling, then once it is calculated it will provide the route data to the management engine which can then provide data to the necessary components in order to navigate the vehicle.
 
 It will also cross check the codes present at any junctions to the expected node on the navigation map to ensure the right path is being followed. If an incorrect node is encountered, this data will be sent to the navigation system which will recalculate the path to the destination node from the current node. This should make the system very robust as any incorrect turns will not cause problems other than potentially increasing journey time.
 
