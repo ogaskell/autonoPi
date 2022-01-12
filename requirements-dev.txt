@@ -1,0 +1,15 @@
+# This file contains all the development requirements for linting.
+
+# Copies prod requirements
+-r requirements.txt
+
+# Base tools
+flake8
+isort
+pre-commit
+
+# Flake8 plugins, see https://github.com/python-discord/code-jam-template/tree/main#plugin-list
+flake8-annotations
+flake8-bandit
+flake8-docstrings
+flake8-isort
