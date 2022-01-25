@@ -2,11 +2,17 @@
 
 """Navigation module."""
 
+import networkx as nx
+
 
 class Navigation:
     """A class to contain the navigation system."""
 
     def __init__(self):
+        self.graph = nx.Graph()
+
+    def add_node(self, node: object) -> None:
+        """Add a node to the navigation graph."""
         pass
 
 
