@@ -20,6 +20,19 @@ class Navigation:
         self.nodes.append(node)
         self.graph.add_node(len(self.nodes) - 1)
 
+    def setup_edges(self, distances: list[list[float]]) -> None:
+        """Setup graph edges from a distance matrix.
+
+        Note that any value < 0 indicates no connection, and this assumes an undirected graph so passing an assymetric
+        distance matrix will result in undefined behaviour.
+        """
+        for x in range(len(self.nodes) - 1):
+            for y in range(x + 1, len(self.nodes)):
+                if distances[y][x] < 0:
+                    continue
+                else:
+                    self.graph.add_edge(x, y, weight=distances[y][x])
+
 
 class Node:
     """A Single node within a navigation graph."""
