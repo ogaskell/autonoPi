@@ -13,3 +13,6 @@ flake8-annotations
 flake8-bandit
 flake8-docstrings
 flake8-isort
+
+# Used for graphical testing of the navigation system.
+matplotlib
