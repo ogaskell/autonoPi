@@ -2,6 +2,7 @@
 
 import os
 import sys
+from pprint import pprint
 
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -12,28 +13,43 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from autonopi import navigation as nav  # noqa: E402
 
 
-def test_edges() -> None:
-    """pass."""
-    navigation = nav.Navigation()
+class Tests:
+    """Test suite."""
 
-    for n in range(5):
-        navigation.add_node(nav.Node(navigation, n))
+    def __init__(self):
+        self.navigation = nav.Navigation()
 
-    dists = [[-1, 3, 1, 12, 2],
-             [3, -1, 2, 5, 12],
-             [1, 2, -1, -1, -1],
-             [12, 5, -1, -1, 0.5],
-             [2, 12, -1, 0.5, -1],
-             ]
+        for n in range(5):
+            self.navigation.add_node(nav.Node(self.navigation, n))
 
-    navigation.setup_edges(dists)
+            dists = [[-1, 3, 1, 12, 2],
+                     [3, -1, 2, 5, 12],
+                     [1, 2, -1, -1, -1],
+                     [12, 5, -1, -1, 0.5],
+                     [2, 12, -1, 0.5, -1],
+                     ]
 
-    pos = nx.circular_layout(navigation.graph)
-    nx.draw(navigation.graph, pos, with_labels=True)
-    labels = nx.get_edge_attributes(navigation.graph, 'weight')
-    nx.draw_networkx_edge_labels(navigation.graph, pos, edge_labels=labels)
-    plt.show()
+            self.navigation.setup_edges(dists)
+
+    def test_edges(self) -> None:
+        """pass."""
+        pos = nx.circular_layout(self.navigation.graph)
+        nx.draw(self.navigation.graph, pos, with_labels=True)
+        labels = nx.get_edge_attributes(self.navigation.graph, 'weight')
+        nx.draw_networkx_edge_labels(self.navigation.graph, pos, edge_labels=labels)
+        plt.show()
+
+    def test_floyds(self) -> None:
+        """Test floyd's algorithm."""
+        self.navigation.floyds()
+        pprint(self.navigation.floyds_routes)
+        pprint(self.navigation.floyds_distances)
+
+        print(self.navigation.shortest_path(2, 3))
 
 
 if __name__ == "__main__":
-    test_edges()
+    T = Tests()
+    T.test_edges()
+    T.test_floyds()
+    print(T.navigation.floyds_distances[3][0] is T.navigation.floyds_distances[0][3])
