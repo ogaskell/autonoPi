@@ -1,0 +1,6 @@
+# Flake8 plugins, see https://github.com/python-discord/code-jam-template/tree/main#plugin-list
+flake8
+flake8-annotations
+flake8-bandit
+flake8-docstrings
+flake8-isort
