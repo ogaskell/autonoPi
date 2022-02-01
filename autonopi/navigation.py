@@ -93,7 +93,6 @@ class Navigation:
             return self.shortest_path(a, self.floyds_routes[b][a]) + [b]
 
 
-
 class Node:
     """A Single node within a navigation graph."""
 
