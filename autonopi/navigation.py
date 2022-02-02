@@ -3,6 +3,7 @@
 """Navigation module."""
 
 from math import inf
+from typing import List
 
 import networkx as nx
 
@@ -22,7 +23,7 @@ class Navigation:
         self.nodes.append(node)
         self.graph.add_node(len(self.nodes) - 1)
 
-    def setup_edges(self, distances: list[list[float]]) -> None:
+    def setup_edges(self, distances: List[List[float]]) -> None:
         """Setup graph edges from a distance matrix.
 
         Note that any value < 0 indicates no connection, and this assumes an undirected graph so passing an assymetric
@@ -82,7 +83,7 @@ class Navigation:
         # to the current graph state.
         self.routes_current = True
 
-    def shortest_path(self, a: int, b: int) -> list[int]:
+    def shortest_path(self, a: int, b: int) -> List[int]:
         """Using floyd's distance and route matrices, find the shortest path between two nodes.
 
         Returns a list of node IDs.
