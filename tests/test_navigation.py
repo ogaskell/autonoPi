@@ -12,7 +12,7 @@ from autonopi import navigation as nav
 class TestNode(unittest.TestCase):
     """Test the Node() class."""
 
-    def test_init(self):
+    def test_init(self) -> None:
         """Test initialising Nodes."""
         # Setup
         id = random.randint(0, 1000)
@@ -28,7 +28,7 @@ class TestNode(unittest.TestCase):
 class TestNavigation(unittest.TestCase):
     """Test the Navigation class."""
 
-    def test_add_node(self):
+    def test_add_node(self) -> None:
         """Test adding Nodes."""
         # Setup
         n = nav.Navigation()
@@ -42,7 +42,7 @@ class TestNavigation(unittest.TestCase):
         for x, node in enumerate(nodes):
             self.assertIs(n.nodes[x], nodes[x])
 
-    def test_setup_weights(self):
+    def test_setup_weights(self) -> None:
         """Test setting up the distance matrix."""
         # Setup
         n = nav.Navigation()
@@ -68,7 +68,7 @@ class TestNavigation(unittest.TestCase):
                 if (d := dists[y][x]) >= 0:
                     self.assertEqual(d, n.graph[y][x]["weight"])
 
-    def test_floyds(self):
+    def test_floyds(self) -> None:
         """Test Implementation of the Floyd-Warshall algorithm."""
         # Setup
         n = nav.Navigation()
