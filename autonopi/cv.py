@@ -20,3 +20,14 @@ class LineDetector:
             return frame
         else:
             raise ValueError("Frame not Available.")
+
+
+if __name__ == "__main__":
+    ll = LineDetector(camera)
+    try:
+        while True:
+            frame = ll.fetch_image()
+            cv2.imshow("frame", frame)
+            cv2.waitKey(0)
+    except KeyboardInterrupt:
+        cv2.destroyAllWindows()
