@@ -23,5 +23,23 @@ def test_camera() -> None:
         cv2.destroyAllWindows()
 
 
+def test_filter() -> None:
+    """Test LineDetector.filter_hsv()."""
+    ll = cv.LineDetector(cv.camera)
+    frame = cv2.imread("./CV_test.jpg")
+
+    mask = ll.filter_hsv(frame,
+                         hue=105,
+                         sat=[38, 255],
+                         val=[38, 255],
+                         )
+
+    cv2.imshow("mask", mask)
+    key = cv2.waitKey(0)
+    while key != 13:
+        key = cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
 if __name__ == "__main__":
-    test_camera()
+    test_filter()
