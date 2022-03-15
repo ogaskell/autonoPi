@@ -21,6 +21,53 @@ class LineDetector:
         else:
             raise ValueError("Frame not Available.")
 
+    def filter_hsv(self,
+                   frame: np.ndarray,
+                   hue: float,
+                   sat: list[float],
+                   val: list[float],
+                   hue_tol: float = 45) -> np.ndarray:
+        """Filter an image using a given HSV filter.
+
+        Parameters
+        ----------
+        frame: np.adarray,
+            The image to process.
+        hue : float
+            The target hue, in range 0 - 180.
+            Note that since OpenCV uses 0 - 180 for hue, degree values must be halved.
+        sat : list of floats
+            Inclusive range of saturation values, range 0 - 255.
+            Must be of length 2.
+        val : list of floats
+            Inclusive range of value values, range 0 - 255.
+            Must be of length 2.
+        hue_tol : float, default 22.5
+            Tolerance in hue, defines a range of hues to allow.
+            Note that since OpenCV uses 0 - 180 for hue, the default value is equivalent to 45°.
+
+        Returns
+        -------
+        np.ndarray
+            A monochrome image, white representing areas of the image which
+             match the filter conditions.
+        """
+        hsv_image = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+        low_bound = np.array([(hue - hue_tol) % 180,
+                              sat[0],
+                              val[0],
+                              ])
+
+        high_bound = np.array([(hue + hue_tol) % 180,  # Modulus allows hue to "wrap around"
+                               sat[1],
+                               val[1],
+                               ])
+
+        mask = cv2.inrange(hsv_image, low_bound, high_bound)
+
+        return mask
+
 
 if __name__ == "__main__":
     ll = LineDetector(camera)
