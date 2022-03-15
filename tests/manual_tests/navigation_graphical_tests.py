@@ -7,7 +7,7 @@ from pprint import pprint
 import matplotlib.pyplot as plt
 import networkx as nx
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
 # noqa required here as there's no way I can comply with E402.
 from autonopi import navigation as nav  # noqa: E402
