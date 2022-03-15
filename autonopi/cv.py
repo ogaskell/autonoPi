@@ -2,7 +2,7 @@
 
 """Computer Vision module."""
 import cv2
-import numpy
+import numpy as np
 
 camera = cv2.VideoCapture(0)
 
@@ -13,7 +13,7 @@ class LineDetector:
     def __init__(self, cam: cv2.VideoCapture):
         self.cam = cam  # Store reference to the VideoCapture object
 
-    def fetch_image(self, flag: int = 1) -> numpy.ndarray:
+    def fetch_image(self, flag: int = 1) -> np.ndarray:
         """Read an image from camera."""
         ret, frame = self.cam.read()
         if ret:
