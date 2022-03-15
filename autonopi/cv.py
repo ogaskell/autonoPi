@@ -64,6 +64,6 @@ class LineDetector:
                                val[1],
                                ])
 
-        mask = cv2.inrange(hsv_image, low_bound, high_bound)
+        mask = cv2.inRange(hsv_image, low_bound, high_bound)
 
         return mask
