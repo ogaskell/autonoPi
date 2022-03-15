@@ -67,14 +67,3 @@ class LineDetector:
         mask = cv2.inrange(hsv_image, low_bound, high_bound)
 
         return mask
-
-
-if __name__ == "__main__":
-    ll = LineDetector(camera)
-    try:
-        while True:
-            frame = ll.fetch_image()
-            cv2.imshow("frame", frame)
-            cv2.waitKey(0)
-    except KeyboardInterrupt:
-        cv2.destroyAllWindows()
