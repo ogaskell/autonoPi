@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 """Computer Vision module."""
+from math import floor
+
 import cv2
 import numpy as np
 
@@ -86,4 +88,12 @@ class LineDetector:
         np.ndarray
             The cropped image.
         """
-        pass
+        if bottom > top:
+            raise ValueError("Image bottom > top ({:1.2f} > {:1.2f})".format(bottom, top))
+        height, width, _ = image.shape
+
+        # Top and bottom in pixels
+        # Note, 1 - (top, bottom) is used since numpy indexes from the top of the image.
+        top_pix, bottom_pix = floor((1 - top) * height), floor((1 - bottom) * height)
+
+        return image[top_pix:bottom_pix, 0:width]
