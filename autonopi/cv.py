@@ -70,7 +70,7 @@ class LineDetector:
 
         return mask
 
-    def v_crop(self, image: np.ndarray, top: float, bottom: float = 0.0) -> np.ndarray:
+    def v_crop(self, image: np.ndarray, top: float, bottom: float = 0.0, blkbar: bool = False) -> np.ndarray:
         """Crop an image vertically between bottom and top.
 
         Parameters
@@ -82,6 +82,11 @@ class LineDetector:
         bottom : float
             Float between 0.0 and 1.0 representing the position of the bottom of the crop.
             Must be less than top.
+        blkbar : bool, default False
+            If this is false, normal behavior is used.
+            Otherwise, instead of cropping the original image and chaning the dimensions, the areas that would be
+            cropped are simply replaced with black bars. This means the coordinates are retained between the input and
+            output images, in case and references need to be maintained between them.
 
         Returns
         -------
@@ -96,4 +101,42 @@ class LineDetector:
         # Note, 1 - (top, bottom) is used since numpy indexes from the top of the image.
         top_pix, bottom_pix = floor((1 - top) * height), floor((1 - bottom) * height)
 
-        return image[top_pix:bottom_pix, 0:width]
+        if not blkbar:
+            return image[top_pix:bottom_pix, 0:width]
+        else:
+            result = image.copy()  # Create copy of image so I don't overwrite the input image unintentionally
+
+            # Top bar
+            if top_pix != 0:  # Don't need to do anything if top_pix is 0, since this would crop nothing
+                top_box = [[0, 0],
+                           [width - 1, 0],
+                           [width - 1, top_pix - 1],  # Ensure top_pix isn't included
+                           [0, top_pix - 1],
+                           ]
+
+                # Needs to be an ndarray, with dtype int32.
+                top_box_np = np.array(top_box, dtype=np.int32)
+                # OpenCV wants it nested and since it's an ndarray this is the easiest way
+                top_box_np = top_box_np.reshape(1, -1, 2)
+
+                result = cv2.fillPoly(result,
+                                      top_box_np,
+                                      [0] * result.ndim,  # Fill with black. Works on RGB and monochrome images.
+                                      )
+
+            if bottom_pix != 0:
+                bottom_box = [[0, height - 1],
+                              [width - 1, height - 1],
+                              [width - 1, bottom_pix + 1],  # Ensure bottom_pix isn't included
+                              [0, bottom_pix + 1],
+                              ]
+
+                bottom_box_np = np.array(bottom_box, dtype=np.int32)
+                bottom_box_np = bottom_box_np.reshape(1, -1, 2)
+
+                result = cv2.fillPoly(result,
+                                      bottom_box_np,
+                                      [0] * result.ndim,  # Fill with black
+                                      )
+
+            return result
