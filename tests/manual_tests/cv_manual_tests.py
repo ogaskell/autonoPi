@@ -32,6 +32,7 @@ def test_filter() -> None:
                          hue=105,
                          sat=[38, 255],
                          val=[38, 255],
+                         hue_tol=15
                          )
 
     cv2.imshow("mask", mask)
