@@ -21,6 +21,17 @@ def show(title: str, image: np.ndarray) -> None:
     cv2.destroyAllWindows()
 
 
+def showmul(title: str, images: list[np.ndarray]) -> None:
+    """Show multiple images in separate windows, similarly to show()."""
+    for n, im in enumerate(images):
+        cv2.imshow(f"{title}, {n}", im)
+
+    key = cv2.waitKey(0)
+    while key != 13:
+        key = cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
 def test_camera() -> None:
     """Test LineDetector.fetch_image()."""
     ll = cv.LineDetector(cv.camera)
