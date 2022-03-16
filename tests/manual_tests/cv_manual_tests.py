@@ -69,6 +69,21 @@ def test_crop() -> None:
     show("cropped image", cropped_frame)
 
 
+def test_stages() -> None:
+    """Show all stages of the CV process."""
+    ll = cv.LineDetector(cv.camera)
+    img = cv2.imread("./CV_test2.jpg")
+    mask = ll.filter_hsv(img,
+                         hue=105,
+                         sat=[38, 255],
+                         val=[38, 255],
+                         hue_tol=15
+                         )
+    crop = ll.v_crop(mask, 0.5, 0, True)
+    showmul("balls", [img, mask, crop])
+
+
 if __name__ == "__main__":
     test_filter()
     test_crop()
+    test_stages()
