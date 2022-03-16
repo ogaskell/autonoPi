@@ -95,7 +95,11 @@ class LineDetector:
         """
         if bottom > top:
             raise ValueError("Image bottom > top ({:1.2f} > {:1.2f})".format(bottom, top))
-        height, width, _ = image.shape
+
+        if image.ndim > 2:  # Account for monochrome images since they don't have a 3rd dimension as RGB does.
+            height, width, _ = image.shape
+        else:
+            height, width = image.shape
 
         # Top and bottom in pixels
         # Note, 1 - (top, bottom) is used since numpy indexes from the top of the image.
