@@ -4,6 +4,7 @@ import os
 import sys
 
 import cv2
+import numpy as np
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 
@@ -47,5 +48,16 @@ def test_filter() -> None:
     show("mask", mask)
 
 
+def test_crop() -> None:
+    """Test LineDetector.v_crop()."""
+    ll = cv.LineDetector(cv.camera)
+    frame = cv2.imread("./CV_test.jpg")
+
+    cropped_frame = ll.v_crop(frame, 0.6, 0.0)
+
+    show("cropped image", cropped_frame)
+
+
 if __name__ == "__main__":
     test_filter()
+    test_crop()
