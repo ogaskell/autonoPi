@@ -11,6 +11,15 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 from autonopi import cv  # noqa: E402
 
 
+def show(title: str, image: np.ndarray) -> None:
+    """Show an image, including handling closing the window."""
+    cv2.imshow(title, image)
+    key = cv2.waitKey(0)
+    while key != 13:
+        key = cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
 def test_camera() -> None:
     """Test LineDetector.fetch_image()."""
     ll = cv.LineDetector(cv.camera)
@@ -35,11 +44,7 @@ def test_filter() -> None:
                          hue_tol=15
                          )
 
-    cv2.imshow("mask", mask)
-    key = cv2.waitKey(0)
-    while key != 13:
-        key = cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    show("mask", mask)
 
 
 if __name__ == "__main__":
