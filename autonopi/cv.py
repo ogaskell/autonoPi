@@ -80,5 +80,10 @@ class LineDetector:
         bottom : float
             Float between 0.0 and 1.0 representing the position of the bottom of the crop.
             Must be less than top.
+
+        Returns
+        -------
+        np.ndarray
+            The cropped image.
         """
         pass
