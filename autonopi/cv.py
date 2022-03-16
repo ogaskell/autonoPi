@@ -67,3 +67,18 @@ class LineDetector:
         mask = cv2.inRange(hsv_image, low_bound, high_bound)
 
         return mask
+
+    def v_crop(self, image: np.ndarray, top: float, bottom: float = 0.0) -> np.ndarray:
+        """Crop an image vertically between bottom and top.
+
+        Parameters
+        ----------
+        image : np.ndarray
+            The image to crop.
+        top : float
+            Float between 0.0 and 1.0 representing the position of the top of the crop.
+        bottom : float
+            Float between 0.0 and 1.0 representing the position of the bottom of the crop.
+            Must be less than top.
+        """
+        pass
