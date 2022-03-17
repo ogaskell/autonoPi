@@ -89,7 +89,15 @@ def test_stages() -> None:
                          )
     crop = ll.v_crop(mask, 0.5, 0, True)
     edge = ll.canny(crop)
-    showmul("CV Test", [img, mask, crop, edge])
+    hough = ll.houghP(edge)
+    hough_im = img.copy()
+
+    print(hough)
+    hough = hough.reshape(1, -1, 4)
+    for x1, y1, x2, y2 in hough[0]:
+        cv2.line(hough_im, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+    showmul("CV Test", [img, mask, crop, edge, hough_im])
 
 
 if __name__ == "__main__":
