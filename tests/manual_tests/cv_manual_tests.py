@@ -88,7 +88,8 @@ def test_stages() -> None:
                          hue_tol=15
                          )
     crop = ll.v_crop(mask, 0.5, 0, True)
-    showmul("balls", [img, mask, crop])
+    edge = ll.canny(crop)
+    showmul("CV Test", [img, mask, crop, edge])
 
 
 if __name__ == "__main__":
