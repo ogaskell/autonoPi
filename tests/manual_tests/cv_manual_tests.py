@@ -69,6 +69,14 @@ def test_crop() -> None:
     show("cropped image", cropped_frame)
 
 
+def test_canny() -> None:
+    """Test LineDetector.canny()."""
+    ll = cv.LineDetector(cv.camera)
+    frame = ll.fetch_image()
+    edges = ll.canny(frame)
+    show("Edges", edges)
+
+
 def test_stages() -> None:
     """Show all stages of the CV process."""
     ll = cv.LineDetector(cv.camera)
@@ -86,4 +94,5 @@ def test_stages() -> None:
 if __name__ == "__main__":
     test_filter()
     test_crop()
+    test_canny()
     test_stages()
