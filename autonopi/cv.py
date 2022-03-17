@@ -168,6 +168,36 @@ class LineDetector:
 
         return result
 
+    def hough(self,
+              image: np.ndarray,
+              rho: float = 1,
+              theta: float = np.pi / 180,
+              thresh: float = 10,
+              ) -> list:
+        """Standard Hough line detection algorithm.
+
+        Probabilistic Hough transform can be unreliable so this can be used for more accurate detection.
+
+        Parameters
+        ----------
+        image : np.ndarray
+            The input image to run the algorithm on.
+        rho : float, default 1
+            The rho resolution in pixels
+        theta : float, default 1deg
+            The angle resolution in radians
+        thresh : float, default 10
+            Line detection threshhold
+
+        Returns
+        -------
+        list[list[list[float]]
+            list of pairs of float, representing roh and theta of each line.
+        """
+        hough = cv2.HoughLines(image, rho, theta, thresh, None)
+
+        return hough
+
     def houghP(self,
                image: np.ndarray,
                rho: float = 1,
