@@ -167,3 +167,37 @@ class LineDetector:
         result = cv2.Canny(image, lwr, upr, krnl)
 
         return result
+
+    def houghP(self,
+               image: np.ndarray,
+               rho: float = 1,
+               theta: float = np.pi / 180,
+               thresh: float = 10,
+               minL: float = 16,
+               maxG: float = 4,
+               ) -> list:
+        """Probabilistic Hough line detection algorithm.
+
+        Parameters
+        ----------
+        image : np.ndarray
+            The input image to run the algorithm on.
+        rho : float, default 1
+            The rho resolution in pixels
+        theta : float, default 1deg
+            The angle resolution in radians
+        thresh : float, default 10
+            Line detection threshhold
+        minL : float, default 8
+            Minimum line length
+        maxG : float, default 4
+            Maximum line gap
+
+        Returns
+        -------
+        list[list[list[float]]
+            list of pairs of float, representing roh and theta of each line.
+        """
+        hough = cv2.HoughLinesP(image, rho, theta, thresh, None, minL, maxG)
+
+        return hough
