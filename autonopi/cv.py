@@ -144,3 +144,26 @@ class LineDetector:
                                       )
 
             return result
+
+    def canny(self, image: np.ndarray, lwr: int = 100, upr: int = 200, krnl: int = 3) -> np.ndarray:
+        """Canny Edge detection algorithm.
+
+        Parameters
+        ----------
+        image : np.ndarray
+            The input image to run the algorithm on.
+        lwr : int, default 100
+            The lower threshold for edge detection.
+        up : int, default 200
+            The upper threshold for edge detection.
+        krnl : int, default 3
+            The size of the Sobel kernel used to find gradients.
+
+        Returns
+        -------
+        np.ndarray
+            The output from the Canny algorithm. Monochrome image.
+        """
+        result = cv2.Canny(image, lwr, upr, krnl)
+
+        return result
