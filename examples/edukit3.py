@@ -9,3 +9,18 @@ Hardware:
 - CamJam EduKit 3
 - Custom 3D printed chassis
 """
+
+from autonopi.cv import LineDetector
+from autonopi.hardware.motion.edukit import EduKit3 as EK3Motion
+from autonopi.management import Manager
+from autonopi.navigation import Navigation
+
+
+class EduKit3Manager(Manager):
+    """This is the implementation of the management system that will run on this hardware."""
+
+    def setup_components(self) -> None:
+        """Setup the components this implementation uses."""
+        self.navigation = Navigation()
+        self.line_detector = LineDetector()
+        self.motion = EK3Motion()
