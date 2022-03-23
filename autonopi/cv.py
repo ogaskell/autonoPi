@@ -13,13 +13,18 @@ camera = cv2.VideoCapture(0)
 class LineDetector:
     """Canny Line Detector."""
 
-    def __init__(self, cam: cv2.VideoCapture):
+    def __init__(self, cam: cv2.VideoCapture, rotate: int = None):
         self.cam = cam  # Store reference to the VideoCapture object
+
+        self.rotation = rotate  # How much to rotate a camera image when fetched.
 
     def fetch_image(self, flag: int = 1) -> np.ndarray:
         """Read an image from camera."""
         ret, frame = self.cam.read()
         if ret:
+            if self.rotation is not None:
+                frame = cv2.rotate(frame, self.rotation)
+
             return frame
         else:
             raise ValueError("Frame not Available.")
