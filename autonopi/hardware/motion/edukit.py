@@ -15,10 +15,12 @@ class EduKit3(Motion):
 
     reverse = True
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, left_pol: bool = False, right_pol: bool = False, *args, **kwargs):
         super().__init__(*args, **kwargs)  # Run the parent class init method, passing through any args.
 
         self.robot = CamJamKitRobot()
+
+        self.pol = (left_pol, right_pol)  # Polarity of motors. If True, reverse any motion of that motor.
 
     def move(self) -> None:
         """Move the car.
