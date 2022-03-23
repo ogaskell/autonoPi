@@ -2,6 +2,7 @@
 
 import os
 import sys
+from math import floor
 
 import cv2
 import numpy as np
@@ -23,8 +24,8 @@ def show(title: str, image: np.ndarray) -> None:
 
 def showmul(title: str, images: list[np.ndarray]) -> None:
     """Show multiple images in separate windows, similarly to show()."""
-    for n, im in enumerate(images):
-        cv2.imshow(f"{title}, {n}", im)
+    for n, im in enumerate(reversed(images)):  # Reversed so the first image is on top.
+        cv2.imshow(f"{title}, {len(images) - n}", im)
 
     key = cv2.waitKey(0)
     while key != 13:
@@ -69,6 +70,14 @@ def test_crop() -> None:
     show("cropped image", cropped_frame)
 
 
+def test_canny() -> None:
+    """Test LineDetector.canny()."""
+    ll = cv.LineDetector(cv.camera)
+    frame = ll.fetch_image()
+    edges = ll.canny(frame)
+    show("Edges", edges)
+
+
 def test_stages() -> None:
     """Show all stages of the CV process."""
     ll = cv.LineDetector(cv.camera)
@@ -80,10 +89,40 @@ def test_stages() -> None:
                          hue_tol=15
                          )
     crop = ll.v_crop(mask, 0.5, 0, True)
-    showmul("balls", [img, mask, crop])
+    edge = ll.canny(crop)
+    hough = ll.houghP(edge)
+    hough_im = img.copy()
+
+    hough = hough.reshape(1, -1, 4)
+    for x1, y1, x2, y2 in hough[0]:
+        cv2.line(hough_im, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+    split_im = img.copy()
+    l_split, r_split = ll.split_lines(hough[0], img.shape[1], bounds=[0, 0.5])
+
+    if len(l_split > 0):
+        for x1, y1, x2, y2 in l_split:
+            cv2.line(split_im, (x1, y1), (x2, y2), (255, 0, 0), 2)
+    else:
+        print("No Left Lines")
+
+    if len(r_split > 0):
+        for x1, y1, x2, y2 in r_split:
+            cv2.line(split_im, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    else:
+        print("No Right Lines")
+
+    lane_m, lane_c = ll.lane_slope(l_split, r_split)
+    bottom_x, bottom_y = (img.shape[0] - lane_c) / lane_m, img.shape[0]
+    top_x, top_y = - lane_c / lane_m, 0
+
+    cv2.line(split_im, (floor(bottom_x), bottom_y), (floor(top_x), top_y), (0, 255, 0), 5)
+
+    showmul("CV Test", [img, mask, crop, edge, hough_im, split_im])
 
 
 if __name__ == "__main__":
     test_filter()
     test_crop()
+    test_canny()
     test_stages()
