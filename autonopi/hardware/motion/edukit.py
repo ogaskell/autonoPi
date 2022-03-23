@@ -28,3 +28,12 @@ class EduKit3(Motion):
         This will take into account self.speed and self.direction and adjust the robot's `value` accordingly.
         """
         pass
+
+    def stop_move(self) -> None:
+        """Stop movement.
+
+        This overwrites the base class to ensure that the motors are reset when the vehicle stops.
+        """
+        super().stop_move()
+
+        self.robot.value = (0, 0)
