@@ -231,3 +231,26 @@ class LineDetector:
         hough = cv2.HoughLinesP(image, rho, theta, thresh, None, minL, maxG)
 
         return hough
+
+    def arrange_lines(self, lines: list[list[int]]) -> list[list[int]]:
+        """Take a list of line segments, and arrange their points such that the first point is below the second.
+
+        Parameters
+        ----------
+        lines : list[list[int]]
+            The list of points to arrange, where each point is [x0, y0, x1, y1]
+
+        Returns
+        -------
+        list[list[int]]
+            The arranged list in the same format as the input.
+            Note that if an iterable other than list is passed for lines, the return value with retain this type,
+             provided it has a .copy() method.
+        """
+        result = lines.copy()
+
+        for line in result:
+            if line[1] > line[3]:
+                line[0], line[1], line[2], line[3] = line[2], line[3], line[0], line[1]
+
+        return result
