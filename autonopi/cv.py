@@ -254,3 +254,79 @@ class LineDetector:
                 line[0], line[1], line[2], line[3] = line[2], line[3], line[0], line[1]
 
         return result
+
+    def split_lines(self,
+                    lines: list[list[int]],
+                    width: float,
+                    bounds: list[int] = [0.0, 0.4],
+                    keep_oob: bool = False,
+                    ) -> tuple[list[list[int]]]:
+        """Split a list of lines into the left and right side of a frame.
+
+        Parameters
+        ----------
+        lines : list[list[int]]
+            List of lines to split
+        width : float
+            The width of the frame containing the lines.
+        bounds : list[int], default [0.0. 0.4]
+            The left and right side of the area to split the lines by, from 0.0 to 1.0 where 0.0 is the left of the
+             frame.
+            Note that this is mirrored for the right side.
+        keep_oob : bool, default False
+            Whether or not to keep lines which lie outside the bounds.
+            If true, the return value will have length 3 - left, right, and out of bounds lines.
+            Else, the return value with have length 2 - left and right lines.
+
+        Returns
+        -------
+        list[list[int]], list[list[int]] [, list[list[int]]]
+            Left, right, and optionally out of bounds lines (according to keep_oob).
+            Note that if an iterable other than list is passed for lines, the return values with retain this type,
+             provided it has a .copy() method.
+        """
+        l_bounds = [width * x for x in bounds]
+        r_bounds = [width * (1 - x) for x in bounds]
+
+        if isinstance(lines, np.ndarray):
+            l_mask = np.ones(len(lines), dtype=bool)
+            r_mask = np.ones(len(lines), dtype=bool)
+            oob_mask = np.ones(len(lines), dtype=bool)
+
+            for n, line in enumerate(lines):
+                if l_bounds[0] <= line[0] < l_bounds[1]:
+                    r_mask[n] = False
+                    oob_mask[n] = False
+                elif r_bounds[1] < line[0] <= r_bounds[0]:
+                    l_mask[n] = False
+                    oob_mask[n] = False
+                else:
+                    l_mask[n] = False
+                    r_mask[n] = False
+
+            l_lines = lines[l_mask]
+            r_lines = lines[r_mask]
+            oob_lines = lines[oob_mask]
+        elif callable(getattr(lines, "remove", None)):
+            l_lines = lines.copy()
+            r_lines = lines.copy()
+            oob_lines = lines.copy()
+
+            for line in lines:
+                if bounds[0] <= line[0] < bounds[1]:
+                    r_lines.remove(line)
+                    oob_lines.remove(line)
+                elif r_bounds[1] < line[0] <= r_bounds[0]:
+                    l_lines.remove(line)
+                    oob_lines.remove(line)
+                else:
+                    l_lines.remove(line)
+                    r_lines.remove(line)
+        else:  # Don't know how to deal with this iterable
+            raise TypeError("lines is not a numpy array or doesn't have .remove() method (type '{}')"
+                            .format(type(lines).__name__))
+
+        if keep_oob:
+            return l_lines, r_lines, oob_lines
+        else:
+            return l_lines, r_lines
