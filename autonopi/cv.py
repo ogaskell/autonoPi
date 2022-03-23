@@ -358,7 +358,7 @@ class LineDetector:
             left_int, left_grad = left_fit.convert().coef
             left_theta = np.arctan(1 / left_grad)
         else:
-            left_int, left_grad = -inf, -inf
+            left_int, left_theta = -inf, -inf
 
         if len(right) > 0:
             right_points = np.array(right).reshape(-1, 2)  # Turn line list into point list
@@ -366,10 +366,10 @@ class LineDetector:
             right_int, right_grad = right_fit.convert().coef
             right_theta = np.arctan(1 / right_grad)
         else:
-            right_int, right_grad = -inf, -inf
+            right_int, right_theta = -inf, -inf
 
         if len(right) == 0 or len(left) == 0:
-            lane_grad, lane_int = max(left_grad, right_grad), max(left_int, right_int)
+            lane_theta, lane_int = max(left_theta, right_theta), max(left_int, right_int)
         else:
             lane_theta = (left_theta + right_theta) / 2
             lane_grad = 1 / np.tan(lane_theta)
