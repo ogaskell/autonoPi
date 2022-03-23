@@ -92,7 +92,6 @@ def test_stages() -> None:
     hough = ll.houghP(edge)
     hough_im = img.copy()
 
-    print(hough)
     hough = hough.reshape(1, -1, 4)
     for x1, y1, x2, y2 in hough[0]:
         cv2.line(hough_im, (x1, y1), (x2, y2), (0, 255, 0), 2)
