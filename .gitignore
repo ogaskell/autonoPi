@@ -133,3 +133,6 @@ dmypy.json
 
 # Repl.it config
 .replit
+
+# Geany Editor
+autonoPi.project
