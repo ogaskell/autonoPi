@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """Computer Vision module."""
-from math import floor
+from math import floor, inf
 
 import cv2
 import numpy as np
@@ -347,21 +347,30 @@ class LineDetector:
         int, int
             The slope and intercept of the lane. (y = slope * x + intercept)
         """
-        left_points = np.array(left).reshape(-1, 2)  # Turn line list into point list
-        left_fit = pl.Polynomial.fit(left_points[:, 0], left_points[:, 1], 1)
-        left_int, left_grad = left_fit.convert().coef
-        left_theta = np.arctan(1 / left_grad)
+        if len(left) > 0:
+            left_points = np.array(left).reshape(-1, 2)  # Turn line list into point list
+            left_fit = pl.Polynomial.fit(left_points[:, 0], left_points[:, 1], 1)
+            left_int, left_grad = left_fit.convert().coef
+            left_theta = np.arctan(1 / left_grad)
+        else:
+            left_int, left_grad = -inf, -inf
 
-        right_points = np.array(right).reshape(-1, 2)  # Turn line list into point list
-        right_fit = pl.Polynomial.fit(right_points[:, 0], right_points[:, 1], 1)
-        right_int, right_grad = right_fit.convert().coef
-        right_theta = np.arctan(1 / right_grad)
+        if len(right) > 0:
+            right_points = np.array(right).reshape(-1, 2)  # Turn line list into point list
+            right_fit = pl.Polynomial.fit(right_points[:, 0], right_points[:, 1], 1)
+            right_int, right_grad = right_fit.convert().coef
+            right_theta = np.arctan(1 / right_grad)
+        else:
+            right_int, right_grad = -inf, -inf
 
-        lane_theta = (left_theta + right_theta) / 2
-        lane_grad = 1 / np.tan(lane_theta)
+        if len(right) == 0 or len(left) == 0:
+            lane_grad, lane_int = max(left_grad, right_grad), max(left_int, right_int)
+        else:
+            lane_theta = (left_theta + right_theta) / 2
+            lane_grad = 1 / np.tan(lane_theta)
 
-        intersect_x = (right_int - left_int) / (left_grad - right_grad)
-        intersect_y = left_grad * intersect_x + left_int
-        lane_int = intersect_y - lane_grad * intersect_x
+            intersect_x = (right_int - left_int) / (left_grad - right_grad)
+            intersect_y = left_grad * intersect_x + left_int
+            lane_int = intersect_y - lane_grad * intersect_x
 
         return lane_grad, lane_int
