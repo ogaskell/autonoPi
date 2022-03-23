@@ -350,7 +350,7 @@ class LineDetector:
         Returns
         -------
         int, int
-            The angle (in radians) and intercept of the lane. (y = slope * x + intercept)
+            The slope and intercept of the lane. (y = slope * x + intercept)
         """
         left_points = np.array(left).reshape(-1, 2)  # Turn line list into point list
         left_fit = pl.Polynomial.fit(left_points[:, 0], left_points[:, 1], 1)
@@ -369,4 +369,4 @@ class LineDetector:
         intersect_y = left_grad * intersect_x + left_int
         lane_int = intersect_y - lane_grad * intersect_x
 
-        return lane_theta, lane_int
+        return lane_grad, lane_int

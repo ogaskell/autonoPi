@@ -112,8 +112,7 @@ def test_stages() -> None:
     else:
         print("No Right Lines")
 
-    lane_t, lane_c = ll.lane_slope(l_split, r_split)
-    lane_m = 1 / np.tan(lane_t)
+    lane_m, lane_c = ll.lane_slope(l_split, r_split)
     bottom_x, bottom_y = (img.shape[0] - lane_c) / lane_m, img.shape[0]
     top_x, top_y = - lane_c / lane_m, 0
 
