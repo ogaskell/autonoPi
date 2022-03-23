@@ -10,6 +10,8 @@ Hardware:
 - Custom 3D printed chassis
 """
 
+import cv2
+
 from autonopi.cv import LineDetector
 from autonopi.hardware.motion.edukit import EduKit3 as EK3Motion
 from autonopi.management import Manager
@@ -22,5 +24,5 @@ class EduKit3Manager(Manager):
     def setup_components(self) -> None:
         """Setup the components this implementation uses."""
         self.navigation = Navigation()
-        self.line_detector = LineDetector()
+        self.line_detector = LineDetector(rotation=cv2.ROTATE_180)
         self.motion = EK3Motion()
