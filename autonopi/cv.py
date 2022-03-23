@@ -350,7 +350,7 @@ class LineDetector:
         Returns
         -------
         int, int
-            The slope and intercept of the lane. (y = slope * x + intercept)
+            The angle (in radians) and intercept of the lane. (y = slope * x + intercept)
         """
         if len(left) > 0:
             left_points = np.array(left).reshape(-1, 2)  # Turn line list into point list
@@ -378,4 +378,4 @@ class LineDetector:
             intersect_y = left_grad * intersect_x + left_int
             lane_int = intersect_y - lane_grad * intersect_x
 
-        return lane_grad, lane_int
+        return lane_theta, lane_int
