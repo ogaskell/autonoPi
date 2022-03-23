@@ -5,6 +5,7 @@ from math import floor
 
 import cv2
 import numpy as np
+import numpy.polynomial.polynomial as pl
 
 camera = cv2.VideoCapture(0)
 
@@ -330,3 +331,37 @@ class LineDetector:
             return l_lines, r_lines, oob_lines
         else:
             return l_lines, r_lines
+
+    def lane_slope(self, left: list[list[int]], right: list[list[int]]) -> tuple[int]:
+        """Calculate the intercept and slope of the lane, based on a list of left and right lane lines.
+
+        Parameters
+        ----------
+        left : list[list[int]]
+            List of left lane lines.
+        right : list[list[int]]
+            List of right lane lines.
+
+        Returns
+        -------
+        int, int
+            The slope and intercept of the lane. (y = slope * x + intercept)
+        """
+        left_points = np.array(left).reshape(-1, 2)  # Turn line list into point list
+        left_fit = pl.Polynomial.fit(left_points[:, 0], left_points[:, 1], 1)
+        left_int, left_grad = left_fit.convert().coef
+        left_theta = np.arctan(1 / left_grad)
+
+        right_points = np.array(right).reshape(-1, 2)  # Turn line list into point list
+        right_fit = pl.Polynomial.fit(right_points[:, 0], right_points[:, 1], 1)
+        right_int, right_grad = right_fit.convert().coef
+        right_theta = np.arctan(1 / right_grad)
+
+        lane_theta = (left_theta + right_theta) / 2
+        lane_grad = 1 / np.tan(lane_theta)
+
+        intersect_x = (right_int - left_int) / (left_grad - right_grad)
+        intersect_y = left_grad * intersect_x + left_int
+        lane_int = intersect_y - lane_grad * intersect_x
+
+        return lane_grad, lane_int
