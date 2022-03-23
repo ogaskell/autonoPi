@@ -2,6 +2,7 @@
 
 import os
 import sys
+from math import floor
 
 import cv2
 import numpy as np
@@ -96,7 +97,28 @@ def test_stages() -> None:
     for x1, y1, x2, y2 in hough[0]:
         cv2.line(hough_im, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
-    showmul("CV Test", [img, mask, crop, edge, hough_im])
+    split_im = img.copy()
+    l_split, r_split = ll.split_lines(hough[0], img.shape[1], bounds=[0, 0.5])
+
+    if len(l_split > 0):
+        for x1, y1, x2, y2 in l_split:
+            cv2.line(split_im, (x1, y1), (x2, y2), (255, 0, 0), 2)
+    else:
+        print("No Left Lines")
+
+    if len(r_split > 0):
+        for x1, y1, x2, y2 in r_split:
+            cv2.line(split_im, (x1, y1), (x2, y2), (0, 0, 255), 2)
+    else:
+        print("No Right Lines")
+
+    lane_m, lane_c = ll.lane_slope(l_split, r_split)
+    bottom_x, bottom_y = (img.shape[0] - lane_c) / lane_m, img.shape[0]
+    top_x, top_y = - lane_c / lane_m, 0
+
+    cv2.line(split_im, (floor(bottom_x), bottom_y), (floor(top_x), top_y), (0, 255, 0), 5)
+
+    showmul("CV Test", [img, mask, crop, edge, hough_im, split_im])
 
 
 if __name__ == "__main__":
