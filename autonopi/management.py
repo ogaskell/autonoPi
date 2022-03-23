@@ -16,6 +16,7 @@ class Manager:
 
     def __init__(self):
         self.setup_components()
+        self.setup_variables()
 
     def setup_components(self) -> None:
         """Setup components required by the system.
@@ -25,6 +26,15 @@ class Manager:
         self.line_detector = LineDetector()
         self.motion = Motion()
         self.navigation = Navigation()
+
+    def setup_variables(self) -> None:
+        """Setup variables required by the system.
+
+        This base class doesn't require any variables so this function is blank. It is still required however, so that
+         it can be included in __init__ without potentially causing undefined errors. This also means any classes which
+         don't need variables needn't worry about creating this function.
+        """
+        pass
 
     def mainloop(self) -> None:
         """Main event loop of the program.
