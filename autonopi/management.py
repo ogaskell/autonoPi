@@ -2,6 +2,7 @@
 
 """Management system module."""
 
+import sys
 
 from .cv import LineDetector
 from .hardware.motion import Motion
@@ -41,8 +42,15 @@ class Manager:
 
         Will simply run self.run continuously.
         """
-        while True:
-            self.run()
+        try:
+            while True:
+                self.run()
+        except KeyboardInterrupt:
+            self.exit()
+            sys.exit(130)
+        except Exception as e:
+            self.exit()
+            raise e  # Reraise error, after the system has been safely exited.
 
     def run(self) -> None:
         """The main event loop code goes here.
@@ -50,3 +58,10 @@ class Manager:
         Note that this function should run and return, since the loop is done elsewhere.
         """
         raise NotImplementedError("Manager() is the base management class, and subclasses must overwrite run().")
+
+    def exit(self) -> None:
+        """Used to allow safe exit of the program.
+
+        Doesn't need to be overwritten.
+        """
+        pass
