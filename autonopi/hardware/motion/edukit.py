@@ -3,6 +3,7 @@
 """Motion class for the CamJam EduKit 3."""
 
 from gpiozero import CamJamKitRobot
+from numpy import cos, pi, sin
 
 from . import Motion
 
@@ -27,7 +28,17 @@ class EduKit3(Motion):
 
         This will take into account self.speed and self.direction and adjust the robot's `value` accordingly.
         """
-        pass
+        theta = - pi * self.direction + (pi/4)  # Angle assumes right is negative, while negative direction is right
+
+        left_v = self.power * cos(theta)
+        right_v = self.power * sin(theta)
+
+        if self.pol[0]:
+            left_v = -left_v
+        if self.pol[1]:
+            right_v = -right_v
+
+        self.robot.value = (left_v, right_v)
 
     def stop_move(self) -> None:
         """Stop movement.
