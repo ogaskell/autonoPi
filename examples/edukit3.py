@@ -26,3 +26,9 @@ class EduKit3Manager(Manager):
         self.navigation = Navigation()
         self.line_detector = LineDetector(camera, rotation=cv2.ROTATE_180)
         self.motion = EK3Motion()
+
+    def setup_variables(self) -> None:
+        """Setup variables the class will use."""
+        # This may be updated by the navigation or CV systems as different lanes are travelled.
+        # Equal to 210 degrees hue, halfway between cyan and blue.
+        self.target_hue = 105
