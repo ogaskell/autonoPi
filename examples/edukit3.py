@@ -24,7 +24,7 @@ class EduKit3Manager(Manager):
     def setup_components(self) -> None:
         """Setup the components this implementation uses."""
         self.navigation = Navigation()
-        self.line_detector = LineDetector(camera, rotation=cv2.ROTATE_180)
+        self.line_detector = LineDetector(camera, rotate=cv2.ROTATE_180)
         self.motion = EK3Motion()
 
     def setup_variables(self) -> None:
