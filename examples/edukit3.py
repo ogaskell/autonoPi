@@ -10,7 +10,10 @@ Hardware:
 - Custom 3D printed chassis
 """
 
+from math import floor
+
 import cv2
+import numpy as np
 
 from autonopi.cv import LineDetector, camera
 from autonopi.hardware.motion.edukit import EduKit3 as EK3Motion
@@ -20,6 +23,11 @@ from autonopi.navigation import Navigation
 
 class EduKit3Manager(Manager):
     """This is the implementation of the management system that will run on this hardware."""
+
+    def __init__(self, vis: bool = False):
+        super().__init__()
+
+        self.visualise = vis  # Whether or not to display CV Visualisations.
 
     def setup_components(self) -> None:
         """Setup the components this implementation uses."""
@@ -57,9 +65,27 @@ class EduKit3Manager(Manager):
 
             lane_t, lane_c = self.line_detector.lane_slope(l_split, r_split)
 
+            if self.visualise:
+                if len(l_split) > 0:
+                    for x1, y1, x2, y2 in l_split:
+                        cv2.line(frame, (x1, y1), (x2, y2), (255, 0, 0), 2)
+
+                if len(r_split) > 0:
+                    for x1, y1, x2, y2 in r_split:
+                        cv2.line(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
+
+                lane_m = 1 / np.tan(lane_t)
+                bottom_x, bottom_y = (frame.shape[0] - lane_c) / lane_m, frame.shape[0]
+                top_x, top_y = - lane_c / lane_m, 0
+
+                cv2.line(frame, (floor(bottom_x), bottom_y), (floor(top_x), top_y), (0, 255, 0), 5)
         else:
             lane_t = 0.0
             l_split, r_split = [], []
+
+        if self.visualise:
+            cv2.imshow("CV Visualisation", frame)
+            cv2.waitKey(20)
 
         return lane_t
 
