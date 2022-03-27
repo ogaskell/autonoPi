@@ -47,9 +47,9 @@ class EduKit3Manager(Manager):
                                              hue_tol=15,
                                              )
 
-        cropped = self.line_detector.v_crop(mask, 0.5, 0, True)
-        edges = self.line_detector.canny(cropped)
-        hough_lines = self.line_detector.houghP(edges)
+        edges = self.line_detector.canny(mask)
+        cropped = self.line_detector.v_crop(edges, 0.35, 0.01, True)
+        hough_lines = self.line_detector.houghP(cropped)
 
         if hough_lines is not None:  # Ensure some lines have been detected
             hough_lines = hough_lines.reshape(1, -1, 4)[0]
