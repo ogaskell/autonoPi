@@ -55,7 +55,11 @@ class EduKit3Manager(Manager):
             hough_lines = hough_lines.reshape(1, -1, 4)[0]
             l_split, r_split = self.line_detector.split_lines(hough_lines, frame.shape[1], bounds=[0, 0.4])
 
-        lane_t, lane_c = self.line_detector.lane_slope(l_split, r_split)
+            lane_t, lane_c = self.line_detector.lane_slope(l_split, r_split)
+
+        else:
+            lane_t = 0.0
+            l_split, r_split = [], []
 
         return lane_t
 
