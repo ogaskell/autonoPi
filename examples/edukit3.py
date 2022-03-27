@@ -68,7 +68,13 @@ class EduKit3Manager(Manager):
 
         Takes an angle in radians and outputs a float from -1.0 to 1.0
         """
-        return angle / 4  # Diving by pi would allow full steering lock, however I would like to reduce max lock
+        # return (- angle / 15) # Diving by pi would allow full steering lock, however I would like to reduce max lock
+
+        A = -0.12
+        B = 0.4
+        C = 0.12
+
+        return A * np.log((B + C*angle) / (B - C*angle))
 
     def run(self) -> None:
         """Move the vehicle."""
