@@ -37,6 +37,11 @@ class EduKit3(Motion):
             left_v = -left_v
         if self.pol[1]:
             right_v = -right_v
+        
+        if left_v > 1.0: left_v = 1.0  # Values sometimes were outside the acceptable range [-1, 1]
+        if right_v > 1.0: right_v = 1.0  # These lines ensure it is within the correct range.
+        if left_v < -1.0: left_v = -1.0
+        if right_v < -1.0: right_v = -1.0
 
         self.robot.value = (left_v, right_v)
 
