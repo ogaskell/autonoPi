@@ -76,7 +76,7 @@ class EduKit3Manager(Manager):
         steering = self.angle_to_steering(angle)
 
         self.motion.start_move()
-        self.motion.speed = 0.4
+        self.motion.power = 0.3
         self.motion.direction = steering
 
     def exit(self) -> None:
